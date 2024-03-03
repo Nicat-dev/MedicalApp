@@ -2,7 +2,6 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.AdminstrationDto;
 import com.project.medicalapp.dto.request.EmployeRegister;
-import com.project.medicalapp.exception.ResourceIdCanNotBeNull;
 import com.project.medicalapp.exception.ResourceNotFoundException;
 import com.project.medicalapp.mapper.AdminstrationMapper;
 import com.project.medicalapp.model.Adminstration;
@@ -13,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+
+import static com.project.medicalapp.util.ServiceValidator.idNullCheck;
 
 @Service
 @RequiredArgsConstructor
@@ -52,11 +52,6 @@ public class AdminstrationServiceImpl implements AdminstrationService {
         repository.deleteById(id);
     }
 
-    private void idNullCheck(Long id){
-        if (Objects.isNull(id)){
-            throw new ResourceIdCanNotBeNull("id","id",id);
-        }
-    }
 
     private AdminstrationDto saveInfo(EmployeRegister register){
         Adminstration adminstration = mapper.requestToEntity(register);
