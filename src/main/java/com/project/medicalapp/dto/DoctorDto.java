@@ -22,6 +22,4 @@ public class DoctorDto {
     private String roleName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<PrescriptionDto> prescriptionDtos;
-    private List<ProcedureDto> procedureDtos;
 }

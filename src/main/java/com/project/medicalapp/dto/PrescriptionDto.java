@@ -16,6 +16,8 @@ public class PrescriptionDto {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private DoctorDto doctorDto;
-    private CustomerDto customerDto;
+    private String doctorName;
+    private String doctorSurname;
+    private String customerName;
+    private String customerSurname;
 }

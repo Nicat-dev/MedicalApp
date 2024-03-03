@@ -22,6 +22,9 @@ public class Doctor extends CommonUserInfo{
     @Column(name = "profession",nullable = false)
     private String profession;
 
+    @Column(name = "address",nullable = false)
+    private String address;
+
 
     @ManyToOne
     @JoinColumn(name = "role_id")
