@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface AdminstrationService {
 
+    AdminstrationDto save(EmployeRegister register);
     List<AdminstrationDto> getList();
     AdminstrationDto getById(Long id);
     AdminstrationDto updateById(EmployeRegister register);

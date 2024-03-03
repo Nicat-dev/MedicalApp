@@ -24,6 +24,11 @@ public class AdminstrationServiceImpl implements AdminstrationService {
     private final RoleRepository roleRepository;
 
     @Override
+    public AdminstrationDto save(EmployeRegister register) {
+       return saveInfo(register);
+    }
+
+    @Override
     public List<AdminstrationDto> getList() {
         return mapper.entityListToDtoList(repository.findAll());
     }
@@ -38,10 +43,7 @@ public class AdminstrationServiceImpl implements AdminstrationService {
     @Override
     public AdminstrationDto updateById(EmployeRegister register) {
         idNullCheck(register.id());
-        Adminstration adminstration = mapper.requestToEntity(register);
-        adminstration.setRole(roleRepository.findById(register.roleId())
-                .orElseThrow(()-> new ResourceNotFoundException("Role",register.roleId().toString(),register)));
-        return mapper.entityToDto(repository.save(adminstration));
+        return saveInfo(register);
     }
 
     @Override
@@ -52,8 +54,15 @@ public class AdminstrationServiceImpl implements AdminstrationService {
 
     private void idNullCheck(Long id){
         if (Objects.isNull(id)){
-            throw new ResourceIdCanNotBeNull("id",id.toString(),id);
+            throw new ResourceIdCanNotBeNull("id","id",id);
         }
+    }
+
+    private AdminstrationDto saveInfo(EmployeRegister register){
+        Adminstration adminstration = mapper.requestToEntity(register);
+        adminstration.setRole(roleRepository.findById(register.roleId())
+                .orElseThrow(()-> new ResourceNotFoundException("Role",register.roleId().toString(),register)));
+        return mapper.entityToDto(repository.save(adminstration));
     }
 
 }
