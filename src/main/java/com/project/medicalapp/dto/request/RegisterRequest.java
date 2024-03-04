@@ -11,6 +11,7 @@ public record RegisterRequest(
         @NotBlank(message = "passport number cannot be blank") String passportNumber,
         @NotBlank(message = "age cannot be blank") Integer age,
         @NotBlank(message = "address cannot be blank") String address,
-        @NotBlank(message = "role id cannot be blank") Long roleId
+        @NotBlank(message = "role id cannot be blank") Long roleId,
+        String citizenship
 ) {
 }
