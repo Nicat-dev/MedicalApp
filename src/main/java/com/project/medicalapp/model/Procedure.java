@@ -24,6 +24,9 @@ public class Procedure {
     @Column(name = "pracedure_name")
     private String procedureName;
 
+    @Column(name = "price")
+    private Float price;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

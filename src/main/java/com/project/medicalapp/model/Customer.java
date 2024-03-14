@@ -20,12 +20,6 @@ public class Customer extends CommonUserInfo{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "address",nullable = false)
-    private String address;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();

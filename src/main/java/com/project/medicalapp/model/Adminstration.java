@@ -12,12 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "adminstartion")
-public class Adminstration extends CommonUserInfo{
+public class Adminstration extends CommonEmployeInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
 }

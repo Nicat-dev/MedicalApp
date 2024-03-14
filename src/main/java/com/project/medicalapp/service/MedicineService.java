@@ -1,4 +1,16 @@
 package com.project.medicalapp.service;
 
+
+import com.project.medicalapp.dto.MedicineDto;
+import com.project.medicalapp.dto.request.MedicineRequest;
+
+import java.util.List;
+
 public interface MedicineService {
+
+    MedicineDto findById(Long id);
+    List<MedicineDto> findAll();
+    MedicineDto update(MedicineRequest register);
+    MedicineDto save(MedicineRequest register);
+    void delete(Long id);
 }

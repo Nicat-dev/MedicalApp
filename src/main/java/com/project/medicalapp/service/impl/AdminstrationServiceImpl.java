@@ -6,8 +6,10 @@ import com.project.medicalapp.exception.ResourceNotFoundException;
 import com.project.medicalapp.mapper.AdminstrationMapper;
 import com.project.medicalapp.model.Adminstration;
 import com.project.medicalapp.repository.AdminstrationRepository;
-import com.project.medicalapp.repository.RoleRepository;
 import com.project.medicalapp.service.AdminstrationService;
+import com.project.medicalapp.service.RoleService;
+import com.project.medicalapp.service.SalaryService;
+import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,13 @@ public class AdminstrationServiceImpl implements AdminstrationService {
 
     private final AdminstrationMapper mapper;
     private final AdminstrationRepository repository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
+    private final SalaryService salaryService;
 
     @Override
     public AdminstrationDto save(EmployeRegister register) {
+        ServiceValidator.idEqualsNull(register.id());
+        ServiceValidator.ifExist(repository,register.id());
        return saveInfo(register);
     }
 
@@ -55,8 +60,8 @@ public class AdminstrationServiceImpl implements AdminstrationService {
 
     private AdminstrationDto saveInfo(EmployeRegister register){
         Adminstration adminstration = mapper.requestToEntity(register);
-        adminstration.setRole(roleRepository.findById(register.roleId())
-                .orElseThrow(()-> new ResourceNotFoundException("Role",register.roleId().toString(),register)));
+        adminstration.setRole(roleService.findRole(register.roleId()));
+        adminstration.setSalary(salaryService.findSalary(register.salaryId()));
         return mapper.entityToDto(repository.save(adminstration));
     }
 

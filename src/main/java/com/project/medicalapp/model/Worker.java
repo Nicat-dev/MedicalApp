@@ -17,10 +17,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "worker")
-public class Worker extends CommonUserInfo{
+public class Worker extends CommonEmployeInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "salary_id")
+    private Salary salary;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
@@ -31,10 +40,6 @@ public class Worker extends CommonUserInfo{
     @Column(name = "updated_at", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
 
 
 }

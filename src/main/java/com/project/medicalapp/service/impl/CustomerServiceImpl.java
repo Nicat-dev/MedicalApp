@@ -6,8 +6,8 @@ import com.project.medicalapp.exception.ResourceNotFoundException;
 import com.project.medicalapp.mapper.CustomerMapper;
 import com.project.medicalapp.model.Customer;
 import com.project.medicalapp.repository.CustomerRepository;
-import com.project.medicalapp.repository.RoleRepository;
 import com.project.medicalapp.service.CustomerService;
+import com.project.medicalapp.service.RoleService;
 import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,10 +22,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository repository;
     private final CustomerMapper mapper;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
 
     @Override
     public CustomerDto save(RegisterRequest registerRequest) {
+        ServiceValidator.ifExist(repository,registerRequest.id());
         return saveInfo(registerRequest);
     }
 
@@ -38,8 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto findById(Long id) {
         idNullCheck(id);
-        return mapper.entityToDto(repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Customer",id.toString(),id)));
+        return mapper.entityToDto(findCustomer(id));
     }
 
     @Override
@@ -50,12 +50,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteById(Long id) {
         idNullCheck(id);
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Customer findCustomer(Long id) {
+        return repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Customer",id.toString(),id));
     }
 
     private CustomerDto saveInfo(RegisterRequest request) {
         Customer customer = mapper.registerToEntity(request);
-        customer.setRole(roleRepository.findById(request.roleId())
-                .orElseThrow(() -> new ResourceNotFoundException("Role", "role", request)));
+        customer.setRole(roleService.findRole(request.roleId()));
         return mapper.entityToDto(customer);
     }
 }

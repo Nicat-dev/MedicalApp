@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class ProcedureDto {
     private Long id;
     private String procedureName;
+    private Float price;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String doctorName;

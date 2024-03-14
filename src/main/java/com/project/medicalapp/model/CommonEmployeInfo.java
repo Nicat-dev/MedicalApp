@@ -19,7 +19,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class CommonUserInfo {
+public abstract class CommonEmployeInfo {
+
     @Column(name = "name",nullable = false)
     private String name;
     @Column(name = "surname",nullable = false)
@@ -31,9 +32,7 @@ public abstract class CommonUserInfo {
     @Column(name = "email")
     private String email;
     @Column(name = "age",nullable = false)
-    private Long age;
-    @Column(name = "address",nullable = false)
-    private String address;
+    private Integer age;
     @Column(name = "citizenship",nullable = false)
     private String citizenship;
 
@@ -47,7 +46,12 @@ public abstract class CommonUserInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "salary_id")
+    private Salary salary;
 }

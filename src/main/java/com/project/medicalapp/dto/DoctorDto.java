@@ -3,7 +3,6 @@ package com.project.medicalapp.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +19,7 @@ public class DoctorDto {
     private String phoneNumber;
     private String email;
     private String roleName;
+    private Float salary;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -19,6 +19,7 @@ public class WorkerDto {
     private String phoneNumber;
     private String email;
     private String roleName;
+    private Float salary;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
