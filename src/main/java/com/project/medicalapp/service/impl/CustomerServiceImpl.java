@@ -2,13 +2,13 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.CustomerDto;
 import com.project.medicalapp.dto.request.RegisterRequest;
+import com.project.medicalapp.exception.ResourceExistsException;
 import com.project.medicalapp.exception.ResourceNotFoundException;
 import com.project.medicalapp.mapper.CustomerMapper;
 import com.project.medicalapp.model.Customer;
 import com.project.medicalapp.repository.CustomerRepository;
 import com.project.medicalapp.service.CustomerService;
 import com.project.medicalapp.service.RoleService;
-import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +26,15 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto save(RegisterRequest registerRequest) {
-        ServiceValidator.ifExist(repository,registerRequest.id());
+        if (repository.existsByEmail(registerRequest.email())){
+            throw new ResourceExistsException("Customer","email",registerRequest.email());
+        }
         return saveInfo(registerRequest);
     }
 
     @Override
-    public CustomerDto update(RegisterRequest registerRequest) {
-        idNullCheck(registerRequest.id());
+    public CustomerDto update(RegisterRequest registerRequest,Long id) {
+        findCustomer(id);
         return saveInfo(registerRequest);
     }
 
@@ -44,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDto> findAll() {
-        return null;
+        return mapper.entityListToDtoList(repository.findAll());
     }
 
     @Override
@@ -62,6 +64,6 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerDto saveInfo(RegisterRequest request) {
         Customer customer = mapper.registerToEntity(request);
         customer.setRole(roleService.findRole(request.roleId()));
-        return mapper.entityToDto(customer);
+        return mapper.entityToDto(repository.save(customer));
     }
 }

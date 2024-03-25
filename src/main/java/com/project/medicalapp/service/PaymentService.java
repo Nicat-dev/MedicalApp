@@ -9,7 +9,8 @@ public interface PaymentService {
 
     PaymentDto findById(Long id);
     List<PaymentDto> findAll();
-    PaymentDto update(PaymentRequest request);
+    PaymentDto update(PaymentRequest request,Long id);
     PaymentDto save(PaymentRequest request);
+    void delete(Long id);
 
 }

@@ -2,6 +2,7 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.PrescriptionDto;
 import com.project.medicalapp.dto.request.PrescriptionRequest;
+import com.project.medicalapp.exception.ResourceNotFoundException;
 import com.project.medicalapp.mapper.PrescriptionMapper;
 import com.project.medicalapp.model.Prescription;
 import com.project.medicalapp.repository.PrescriptionRepository;
@@ -25,19 +26,18 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
 
     @Override
-    public PrescriptionDto findById(Long id) {
-        return null;
+    public PrescriptionDto findById(Long id){
+        return mapper.prescriptionToPrescriptionDto(findPrescription(id));
     }
 
     @Override
     public PrescriptionDto save(PrescriptionRequest request) {
-        ServiceValidator.idEqualsNull(request.id());
         return saveBy(request);
     }
 
     @Override
-    public PrescriptionDto update(PrescriptionRequest request) {
-        ServiceValidator.idNullCheck(request.id());
+    public PrescriptionDto update(PrescriptionRequest request,Long id) {
+        findPrescription(id);
         return saveBy(request);
     }
 
@@ -58,6 +58,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         prescription.setCustomer(customerService.findCustomer(request.customerId()));
         prescription.setDoctor(doctorService.findDoctor(request.doctorId()));
         return mapper.prescriptionToPrescriptionDto(repository.save(prescription));
+    }
+
+    private Prescription findPrescription(Long id){
+        return repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Prescription","id",id));
     }
 
 }

@@ -29,8 +29,7 @@ public class ProcedureServiceImpl implements ProcedureService {
 
     @Override
     public ProcedureDto find(Long id) {
-        return mapper.procedureToProcedureDto(repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Procedure","id",id)));
+        return mapper.procedureToProcedureDto(findProcedure(id));
     }
 
     @Override
@@ -40,13 +39,12 @@ public class ProcedureServiceImpl implements ProcedureService {
 
     @Override
     public ProcedureDto save(ProcedureRequest request) {
-        ServiceValidator.idEqualsNull(request.id());
         return saveBy(request);
     }
 
     @Override
-    public ProcedureDto update(ProcedureRequest request) {
-        ServiceValidator.idNullCheck(request.id());
+    public ProcedureDto update(ProcedureRequest request,Long id) {
+        findProcedure(id);
         return saveBy(request);
     }
 
@@ -63,6 +61,11 @@ public class ProcedureServiceImpl implements ProcedureService {
         procedure.setSale(saleService.findSale(request.saleId()));
 
         return mapper.procedureToProcedureDto(repository.save(procedure));
+    }
+
+    private Procedure findProcedure(Long id){
+        return repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Procedure","id",id));
     }
 
 

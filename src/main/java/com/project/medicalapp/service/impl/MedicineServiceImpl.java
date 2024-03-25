@@ -7,7 +7,6 @@ import com.project.medicalapp.mapper.MedicineMapper;
 import com.project.medicalapp.model.Medicine;
 import com.project.medicalapp.repository.MedicineRepositroy;
 import com.project.medicalapp.service.MedicineService;
-import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +32,13 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public MedicineDto update(MedicineRequest register) {
-        idNullCheck(register.id());
-        return null;
+    public MedicineDto update(MedicineRequest register,Long id) {
+        findById(id);
+        return save(register);
     }
 
     @Override
     public MedicineDto save(MedicineRequest register) {
-        ServiceValidator.idEqualsNull(register.id());
         return mapper.medicineToDto(repositroy.save(mapper.registerToEntity(register)));
     }
 

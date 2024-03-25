@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.NonNull;
 
 public record EmployeRegister(
-         Long id,
          @NotBlank(message = "name cannot be blank")
          String name,
          @NotBlank(message = "surname cannot be blank")

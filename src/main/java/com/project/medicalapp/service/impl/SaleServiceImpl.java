@@ -39,14 +39,18 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public SaleDto save(SaleRequest request) {
-        ServiceValidator.idEqualsNull(request.id());
         return saveBy(request);
     }
 
     @Override
-    public SaleDto update(SaleRequest request) {
-        ServiceValidator.idNullCheck(request.id());
+    public SaleDto update(SaleRequest request,Long id) {
         return saveBy(request);
+    }
+
+    @Override
+    public void delete(Long id) {
+        ServiceValidator.idNullCheck(id);
+        repository.deleteById(id);
     }
 
     private SaleDto saveBy(SaleRequest request){

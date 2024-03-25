@@ -29,13 +29,16 @@ public abstract class CommonEmployeInfo {
     private String phoneNumber;
     @Column(name = "passport_number",nullable = false)
     private String passportNumber;
-    @Column(name = "email")
+    @Column(name = "email",nullable = false,unique = true)
     private String email;
     @Column(name = "age",nullable = false)
     private Integer age;
     @Column(name = "citizenship",nullable = false)
     private String citizenship;
-
+    @Column(name = "username",nullable = false,unique = true)
+    private String username;
+    @Column(name = "password",nullable = false)
+    private String password;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

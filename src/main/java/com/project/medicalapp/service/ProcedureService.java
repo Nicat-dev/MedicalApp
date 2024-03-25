@@ -10,7 +10,7 @@ public interface ProcedureService {
     ProcedureDto find(Long id);
     List<ProcedureDto> findAll();
     ProcedureDto save(ProcedureRequest request);
-    ProcedureDto update(ProcedureRequest request);
+    ProcedureDto update(ProcedureRequest request,Long id);
     void delete(Long id);
 
 }

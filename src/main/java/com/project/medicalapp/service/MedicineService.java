@@ -10,7 +10,7 @@ public interface MedicineService {
 
     MedicineDto findById(Long id);
     List<MedicineDto> findAll();
-    MedicineDto update(MedicineRequest register);
+    MedicineDto update(MedicineRequest register,Long id);
     MedicineDto save(MedicineRequest register);
     void delete(Long id);
 }

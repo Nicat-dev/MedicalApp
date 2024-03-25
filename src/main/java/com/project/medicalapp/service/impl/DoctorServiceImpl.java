@@ -9,7 +9,6 @@ import com.project.medicalapp.repository.DoctorRepository;
 import com.project.medicalapp.service.DoctorService;
 import com.project.medicalapp.service.RoleService;
 import com.project.medicalapp.service.SalaryService;
-import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +27,12 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorDto save(EmployeRegister register) {
-        ServiceValidator.ifExist(repository, register.id());
        return saveDoctor(register);
     }
 
     @Override
-    public DoctorDto update(EmployeRegister register) {
-        idNullCheck(register.id());
+    public DoctorDto update(EmployeRegister register,Long id) {
+        findDoctor(id);
         return saveDoctor(register);
     }
 

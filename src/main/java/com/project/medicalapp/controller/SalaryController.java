@@ -26,9 +26,9 @@ public class SalaryController {
         return ResponseEntity.created(location).body(dto);
     }
 
-    @PutMapping
-    public ResponseEntity<SalaryDto> update(@Valid @RequestBody SalaryRequest request){
-        final var dto = service.save(request);
+    @PutMapping("{id}")
+    public ResponseEntity<SalaryDto> update(@Valid @RequestBody SalaryRequest request,@PathVariable Long id){
+        final var dto = service.update(request,id);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);

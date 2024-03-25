@@ -9,7 +9,6 @@ import com.project.medicalapp.repository.WorkerRepository;
 import com.project.medicalapp.service.RoleService;
 import com.project.medicalapp.service.SalaryService;
 import com.project.medicalapp.service.WorkerService;
-import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +31,11 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public WorkerDto save(EmployeRegister register) {
-        ServiceValidator.idEqualsNull(register.id());
         return saveBy(register);
     }
 
     @Override
-    public WorkerDto update(EmployeRegister register) {
-        ServiceValidator.idNullCheck(register.id());
+    public WorkerDto update(EmployeRegister register, Long id) {
         return saveBy(register);
     }
 
@@ -49,7 +46,6 @@ public class WorkerServiceImpl implements WorkerService {
 
     @Override
     public void delete(Long id) {
-        ServiceValidator.idNullCheck(id);
         repository.deleteById(id);
     }
 

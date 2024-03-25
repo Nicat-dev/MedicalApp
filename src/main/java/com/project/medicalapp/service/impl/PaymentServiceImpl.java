@@ -8,14 +8,12 @@ import com.project.medicalapp.model.Payment;
 import com.project.medicalapp.repository.PaymentRepository;
 import com.project.medicalapp.service.CustomerService;
 import com.project.medicalapp.service.PaymentService;
-import com.project.medicalapp.util.ServiceValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.project.medicalapp.util.ServiceValidator.idNullCheck;
-import static com.project.medicalapp.util.ServiceValidator.ifExist;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +26,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentDto findById(Long id) {
-        return mapper.entityToDto(repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Payment","id",id)));
+        return mapper.entityToDto(findPayment(id));
     }
 
     @Override
@@ -38,16 +35,20 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto update(PaymentRequest request) {
-        idNullCheck(request.id());
-        ifExist(repository, request.id());
+    public PaymentDto update(PaymentRequest request, Long id) {
+        findPayment(id);
         return saveProcess(request);
     }
 
     @Override
     public PaymentDto save(PaymentRequest request) {
-        ServiceValidator.idEqualsNull(request.id());
         return saveProcess(request);
+    }
+
+    @Override
+    public void delete(Long id) {
+        idNullCheck(id);
+        repository.deleteById(id);
     }
 
 
@@ -55,6 +56,11 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = mapper.requestToEntity(request);
         payment.setCustomer(customerService.findCustomer(request.customerId()));
         return mapper.entityToDto(payment);
+    }
+
+    private Payment findPayment(Long id){
+        return repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Payment","id",id));
     }
 
 }

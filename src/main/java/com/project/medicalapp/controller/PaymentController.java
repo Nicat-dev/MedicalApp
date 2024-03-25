@@ -1,8 +1,8 @@
 package com.project.medicalapp.controller;
 
-import com.project.medicalapp.dto.CustomerDto;
-import com.project.medicalapp.dto.request.RegisterRequest;
-import com.project.medicalapp.service.CustomerService;
+import com.project.medicalapp.dto.PaymentDto;
+import com.project.medicalapp.dto.request.PaymentRequest;
+import com.project.medicalapp.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/customer")
-public class CustomerController {
-
-    private final CustomerService service;
-
+@RequestMapping("/api/v1/payment")
+public class PaymentController {
+    private final PaymentService service;
 
     @PostMapping
-    public ResponseEntity<CustomerDto> save(@Valid @RequestBody RegisterRequest request){
+    public ResponseEntity<PaymentDto> save(@Valid @RequestBody PaymentRequest request){
         final var dto = service.save(request);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
@@ -28,7 +26,7 @@ public class CustomerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> update(@Valid @RequestBody RegisterRequest request,@PathVariable Long id){
+    public ResponseEntity<PaymentDto> update(@Valid @RequestBody PaymentRequest request,@PathVariable Long id){
         final var dto = service.update(request,id);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
@@ -36,21 +34,20 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> get(@Valid @PathVariable Long id){
+    public ResponseEntity<PaymentDto> get(@Valid @PathVariable Long id){
         final var dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAll() {
+    public ResponseEntity<List<PaymentDto>> getAll() {
         final var dtoList = service.findAll();
         return ResponseEntity.ok().body(dtoList);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        service.deleteById(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

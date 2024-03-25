@@ -9,7 +9,7 @@ import java.util.List;
 public interface DoctorService {
 
     DoctorDto save(EmployeRegister register);
-    DoctorDto update(EmployeRegister register);
+    DoctorDto update(EmployeRegister register,Long id);
     void delete(Long id);
     DoctorDto getById(Long id);
     List<DoctorDto> getList();

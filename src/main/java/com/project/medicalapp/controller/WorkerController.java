@@ -24,9 +24,9 @@ public class WorkerController {
         return ResponseEntity.created(location).body(dto);
     }
 
-    @PutMapping
-    public ResponseEntity<WorkerDto> update(@Valid @RequestBody EmployeRegister register){
-        final var dto = service.update(register);
+    @PutMapping("{id}")
+    public ResponseEntity<WorkerDto> update(@Valid @RequestBody EmployeRegister register,@PathVariable Long id){
+        final var dto = service.update(register,id);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);

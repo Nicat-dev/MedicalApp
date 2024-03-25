@@ -13,6 +13,6 @@ public interface SalaryService {
     SalaryDto findById(Long id);
     List<SalaryDto> findAll();
     SalaryDto save(SalaryRequest request);
-    SalaryDto update(SalaryRequest request);
+    SalaryDto update(SalaryRequest request,Long id);
     void delete(Long id);
 }

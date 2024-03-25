@@ -12,6 +12,7 @@ public interface SaleService {
     SaleDto find(Long id);
     List<SaleDto> findAll();
     SaleDto save(SaleRequest request);
-    SaleDto update(SaleRequest request);
+    SaleDto update(SaleRequest request,Long id);
+    void delete(Long id);
 
 }

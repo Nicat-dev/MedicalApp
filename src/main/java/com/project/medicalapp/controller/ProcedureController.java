@@ -1,8 +1,8 @@
 package com.project.medicalapp.controller;
 
-import com.project.medicalapp.dto.CustomerDto;
-import com.project.medicalapp.dto.request.RegisterRequest;
-import com.project.medicalapp.service.CustomerService;
+import com.project.medicalapp.dto.ProcedureDto;
+import com.project.medicalapp.dto.request.ProcedureRequest;
+import com.project.medicalapp.service.ProcedureService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,43 +13,42 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/customer")
-public class CustomerController {
+@RequestMapping("/api/v1/procedure")
+public class ProcedureController {
 
-    private final CustomerService service;
-
+    private final ProcedureService service;
 
     @PostMapping
-    public ResponseEntity<CustomerDto> save(@Valid @RequestBody RegisterRequest request){
+    public ResponseEntity<ProcedureDto> save(@Valid @RequestBody ProcedureRequest request){
         final var dto = service.save(request);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> update(@Valid @RequestBody RegisterRequest request,@PathVariable Long id){
+    @PutMapping("{id}")
+    public ResponseEntity<ProcedureDto> update(@Valid @RequestBody ProcedureRequest request,@PathVariable Long id){
         final var dto = service.update(request,id);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> get(@Valid @PathVariable Long id){
-        final var dto = service.findById(id);
+    @GetMapping("{id}")
+    public ResponseEntity<ProcedureDto> get(@Valid @PathVariable Long id){
+        final var dto = service.find(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAll() {
+    public ResponseEntity<List<ProcedureDto>> getAll() {
         final var dtoList = service.findAll();
         return ResponseEntity.ok().body(dtoList);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        service.deleteById(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 

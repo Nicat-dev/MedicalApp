@@ -38,13 +38,11 @@ public class SalaryServiceImpl implements SalaryService {
 
     @Override
     public SalaryDto save(SalaryRequest request) {
-        ServiceValidator.ifExist(repository,request.id());
         return saveBy(request);
     }
 
     @Override
-    public SalaryDto update(SalaryRequest request) {
-        ServiceValidator.idNullCheck(request.id());
+    public SalaryDto update(SalaryRequest request,Long id) {
         return saveBy(request);
     }
 

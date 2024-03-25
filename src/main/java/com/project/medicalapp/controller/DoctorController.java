@@ -24,15 +24,15 @@ public class DoctorController {
         return ResponseEntity.created(location).body(dto);
     }
 
-    @PutMapping
-    public ResponseEntity<DoctorDto> update(@Valid @RequestBody EmployeRegister register){
-        final var dto = service.update(register);
+    @PutMapping("/{id}")
+    public ResponseEntity<DoctorDto> update(@Valid @RequestBody EmployeRegister register,@PathVariable Long id){
+        final var dto = service.update(register,id);
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/{id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DoctorDto> get(@Valid @PathVariable Long id){
         final var dto = service.getById(id);
         return ResponseEntity.ok().body(dto);

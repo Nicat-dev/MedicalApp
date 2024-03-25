@@ -28,7 +28,7 @@ public abstract class CommonUserInfo {
     private String phoneNumber;
     @Column(name = "passport_number",nullable = false)
     private String passportNumber;
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
     @Column(name = "age",nullable = false)
     private Long age;
