@@ -1,5 +1,6 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.common;
 
+import com.project.medicalapp.model.entity.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,8 +20,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public abstract class CommonEmployeInfo {
-
+public abstract class CommonUserInfo {
     @Column(name = "name",nullable = false)
     private String name;
     @Column(name = "surname",nullable = false)
@@ -29,16 +29,15 @@ public abstract class CommonEmployeInfo {
     private String phoneNumber;
     @Column(name = "passport_number",nullable = false)
     private String passportNumber;
-    @Column(name = "email",nullable = false,unique = true)
+    @Column(name = "email",unique = true)
     private String email;
     @Column(name = "age",nullable = false)
-    private Integer age;
+    private Long age;
+    @Column(name = "address",nullable = false)
+    private String address;
     @Column(name = "citizenship",nullable = false)
     private String citizenship;
-    @Column(name = "username",nullable = false,unique = true)
-    private String username;
-    @Column(name = "password",nullable = false)
-    private String password;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -49,12 +48,7 @@ public abstract class CommonEmployeInfo {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
-
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
-
-    @ManyToOne
-    @JoinColumn(name = "salary_id")
-    private Salary salary;
 }

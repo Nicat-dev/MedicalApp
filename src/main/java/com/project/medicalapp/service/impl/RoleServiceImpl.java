@@ -2,12 +2,13 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.RoleDto;
 import com.project.medicalapp.dto.request.RoleRequest;
-import com.project.medicalapp.exception.ResourceNotFoundException;
+import com.project.medicalapp.exception.ApplicationException;
 import com.project.medicalapp.mapper.RoleMapper;
-import com.project.medicalapp.model.Role;
+import com.project.medicalapp.model.entity.Role;
+import com.project.medicalapp.model.enums.Exceptions;
 import com.project.medicalapp.repository.RoleRepository;
 import com.project.medicalapp.service.RoleService;
-import com.project.medicalapp.util.ServiceValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +16,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository repository;
     private final RoleMapper mapper;
 
     @Override
     public Role findRole(Long id) {
         return repository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException("Salary","salary",id));
+                .orElseThrow(() -> new ApplicationException(Exceptions.ROLE_NOT_FOUND));
     }
 
     @Override
@@ -36,13 +37,14 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public RoleDto update(RoleRequest request,Long id) {
-        Role role = findRole(id);
-        // Update the existing role entity with data from the request
-        mapper.updateRoleFromRequest(role, request);
-        // Save the updated role entity
-        role = repository.save(role);
-        return mapper.entityToDto(role);
+    @Transactional
+    public RoleDto update(RoleRequest request, Long id) {
+        return repository.findById(id)
+                .map(role -> {
+                    Role updateRole = mapper.requestToEntity(request);
+                    updateRole.setId(id);
+                    return mapper.entityToDto(repository.save(updateRole));
+                }).orElseThrow(() -> new ApplicationException(Exceptions.ROLE_NOT_FOUND));
     }
 
     @Override
@@ -52,12 +54,11 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public void delete(Long id) {
-        ServiceValidator.idNullCheck(id);
-        repository.deleteById(id);
+        repository.delete(findRole(id));
     }
 
 
-    private RoleDto saveBy(RoleRequest roleRequest){
+    private RoleDto saveBy(RoleRequest roleRequest) {
         return mapper.entityToDto(repository.save(mapper.requestToEntity(roleRequest)));
     }
 

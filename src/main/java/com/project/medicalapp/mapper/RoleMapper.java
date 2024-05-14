@@ -2,12 +2,15 @@ package com.project.medicalapp.mapper;
 
 import com.project.medicalapp.dto.RoleDto;
 import com.project.medicalapp.dto.request.RoleRequest;
-import com.project.medicalapp.model.Role;
+import com.project.medicalapp.model.entity.Role;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface RoleMapper {
     RoleDto entityToDto(Role role);
     List<RoleDto> entityListToDtoList(List<Role> roleList);

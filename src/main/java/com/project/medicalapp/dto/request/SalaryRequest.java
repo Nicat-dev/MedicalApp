@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record SalaryRequest(
 
         @NotBlank(message = "position cannot be blank") String position,
-        @NotNull Float salary
+        @NotNull Double salary
 
 ) {
 }

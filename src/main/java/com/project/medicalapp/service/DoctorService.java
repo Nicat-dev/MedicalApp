@@ -2,7 +2,7 @@ package com.project.medicalapp.service;
 
 import com.project.medicalapp.dto.DoctorDto;
 import com.project.medicalapp.dto.request.EmployeRegister;
-import com.project.medicalapp.model.Doctor;
+import com.project.medicalapp.model.entity.Doctor;
 
 import java.util.List;
 

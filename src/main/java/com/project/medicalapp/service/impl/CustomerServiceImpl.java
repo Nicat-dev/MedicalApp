@@ -2,19 +2,19 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.CustomerDto;
 import com.project.medicalapp.dto.request.RegisterRequest;
-import com.project.medicalapp.exception.ResourceExistsException;
-import com.project.medicalapp.exception.ResourceNotFoundException;
+import com.project.medicalapp.exception.ApplicationException;
 import com.project.medicalapp.mapper.CustomerMapper;
-import com.project.medicalapp.model.Customer;
+import com.project.medicalapp.model.entity.Customer;
+import com.project.medicalapp.model.enums.Exceptions;
 import com.project.medicalapp.repository.CustomerRepository;
 import com.project.medicalapp.service.CustomerService;
 import com.project.medicalapp.service.RoleService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.project.medicalapp.util.ServiceValidator.idNullCheck;
 
 @Service
 @RequiredArgsConstructor
@@ -26,21 +26,25 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto save(RegisterRequest registerRequest) {
-        if (repository.existsByEmail(registerRequest.email())){
-            throw new ResourceExistsException("Customer","email",registerRequest.email());
+        if (repository.existsByEmail(registerRequest.email())) {
+            throw new ApplicationException(Exceptions.EMAIL_EXIST_EXCEPTION);
         }
         return saveInfo(registerRequest);
     }
 
     @Override
-    public CustomerDto update(RegisterRequest registerRequest,Long id) {
-        findCustomer(id);
-        return saveInfo(registerRequest);
+    @Transactional
+    public CustomerDto update(RegisterRequest registerRequest, Long id) {
+        return repository.findById(id).map(customer -> {
+            Customer customerMapper = mapper.registerToEntity(registerRequest);
+            customerMapper.setId(id);
+            customerMapper.setRole(roleService.findRole(registerRequest.roleId()));
+            return mapper.entityToDto(repository.save(customer));
+        }).orElseThrow(() -> new ApplicationException(Exceptions.USER_NOT_FOUND_EXCEPTION));
     }
 
     @Override
     public CustomerDto findById(Long id) {
-        idNullCheck(id);
         return mapper.entityToDto(findCustomer(id));
     }
 
@@ -51,14 +55,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(Long id) {
-        idNullCheck(id);
-        repository.deleteById(id);
+        repository.delete(findCustomer(id));
     }
 
     @Override
     public Customer findCustomer(Long id) {
         return repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Customer",id.toString(),id));
+                .orElseThrow(() -> new ApplicationException(Exceptions.USER_NOT_FOUND_EXCEPTION));
     }
 
     private CustomerDto saveInfo(RegisterRequest request) {

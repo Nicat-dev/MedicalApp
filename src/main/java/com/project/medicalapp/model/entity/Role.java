@@ -1,4 +1,4 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

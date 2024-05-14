@@ -2,11 +2,13 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.MedicineDto;
 import com.project.medicalapp.dto.request.MedicineRequest;
-import com.project.medicalapp.exception.ResourceNotFoundException;
+import com.project.medicalapp.exception.ApplicationException;
 import com.project.medicalapp.mapper.MedicineMapper;
-import com.project.medicalapp.model.Medicine;
+import com.project.medicalapp.model.entity.Medicine;
+import com.project.medicalapp.model.enums.Exceptions;
 import com.project.medicalapp.repository.MedicineRepositroy;
 import com.project.medicalapp.service.MedicineService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +34,13 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    public MedicineDto update(MedicineRequest register,Long id) {
-        findById(id);
-        return save(register);
+    @Transactional
+    public MedicineDto update(MedicineRequest register, Long id) {
+        return repositroy.findById(id).map(medicine -> {
+            Medicine updateMedicine = mapper.registerToEntity(register);
+            updateMedicine.setId(id);
+            return mapper.medicineToDto(repositroy.save(updateMedicine));
+        }).orElseThrow(() -> new ApplicationException(Exceptions.MEDICINE_NOT_FOUND_EXCEPTION));
     }
 
     @Override
@@ -44,13 +50,13 @@ public class MedicineServiceImpl implements MedicineService {
 
     @Override
     public void delete(Long id) {
-        idNullCheck(id);
-        repositroy.deleteById(id);
+        repositroy.delete(getById(id));
     }
 
 
-    private Medicine getById(Long id){
-        return repositroy.findById(id).orElseThrow(()-> new ResourceNotFoundException("Medicine","id",id));
+    private Medicine getById(Long id) {
+        return repositroy.findById(id)
+                .orElseThrow(() -> new ApplicationException(Exceptions.MEDICINE_NOT_FOUND_EXCEPTION));
     }
 
 }

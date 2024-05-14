@@ -3,12 +3,14 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.SaleDto;
 import com.project.medicalapp.dto.request.SaleRequest;
-import com.project.medicalapp.exception.ResourceNotFoundException;
+import com.project.medicalapp.exception.ApplicationException;
 import com.project.medicalapp.mapper.SaleMapper;
-import com.project.medicalapp.model.Sale;
+import com.project.medicalapp.model.entity.Sale;
+import com.project.medicalapp.model.enums.Exceptions;
 import com.project.medicalapp.repository.SaleRepository;
 import com.project.medicalapp.service.SaleService;
 import com.project.medicalapp.util.ServiceValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Sale findSale(Long id) {
         return repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Sale","id",id));
+                .orElseThrow(() -> new ApplicationException(Exceptions.SALE_NOT_FOUND));
     }
 
     @Override
@@ -43,8 +45,12 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public SaleDto update(SaleRequest request,Long id) {
-        return saveBy(request);
+    @Transactional
+    public SaleDto update(SaleRequest request, Long id) {
+        return repository.findById(id).map(sale -> {
+            Sale updateSale = mapper.requestToEntity(request);
+            return mapper.entityToDto(updateSale);
+        }).orElseThrow(() -> new ApplicationException(Exceptions.SALE_NOT_FOUND));
     }
 
     @Override
@@ -53,7 +59,7 @@ public class SaleServiceImpl implements SaleService {
         repository.deleteById(id);
     }
 
-    private SaleDto saveBy(SaleRequest request){
+    private SaleDto saveBy(SaleRequest request) {
         return mapper.entityToDto(repository.save(mapper.requestToEntity(request)));
     }
 }

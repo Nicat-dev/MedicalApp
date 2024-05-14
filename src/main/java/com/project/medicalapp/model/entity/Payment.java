@@ -1,4 +1,4 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,20 +16,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "worker")
-public class Worker extends CommonEmployeInfo{
+@Table(name = "payment")
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
-
-    @ManyToOne
-    @JoinColumn(name = "salary_id")
-    private Salary salary;
+    @Column(name = "payment_type",nullable = false)
+    private String paymentType;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
@@ -41,5 +34,7 @@ public class Worker extends CommonEmployeInfo{
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
-
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

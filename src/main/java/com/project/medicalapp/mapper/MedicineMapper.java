@@ -2,7 +2,7 @@ package com.project.medicalapp.mapper;
 
 import com.project.medicalapp.dto.MedicineDto;
 import com.project.medicalapp.dto.request.MedicineRequest;
-import com.project.medicalapp.model.Medicine;
+import com.project.medicalapp.model.entity.Medicine;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;

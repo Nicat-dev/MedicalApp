@@ -2,7 +2,7 @@ package com.project.medicalapp.mapper;
 
 import com.project.medicalapp.dto.PaymentDto;
 import com.project.medicalapp.dto.request.PaymentRequest;
-import com.project.medicalapp.model.Payment;
+import com.project.medicalapp.model.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValuePropertyMappingStrategy;

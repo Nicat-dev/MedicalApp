@@ -2,12 +2,14 @@ package com.project.medicalapp.service.impl;
 
 import com.project.medicalapp.dto.PaymentDto;
 import com.project.medicalapp.dto.request.PaymentRequest;
-import com.project.medicalapp.exception.ResourceNotFoundException;
+import com.project.medicalapp.exception.ApplicationException;
 import com.project.medicalapp.mapper.PaymentMapper;
-import com.project.medicalapp.model.Payment;
+import com.project.medicalapp.model.entity.Payment;
+import com.project.medicalapp.model.enums.Exceptions;
 import com.project.medicalapp.repository.PaymentRepository;
 import com.project.medicalapp.service.CustomerService;
 import com.project.medicalapp.service.PaymentService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,9 +37,15 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public PaymentDto update(PaymentRequest request, Long id) {
-        findPayment(id);
-        return saveProcess(request);
+        return repository.findById(id).map(payment -> {
+
+            Payment updatePayment = mapper.requestToEntity(request);
+            updatePayment.setId(id);
+            payment.setCustomer(customerService.findCustomer(request.customerId()));
+            return mapper.entityToDto(updatePayment);
+        }).orElseThrow(() -> new ApplicationException(Exceptions.PAYMENT_NOT_FOUND));
     }
 
     @Override
@@ -47,20 +55,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void delete(Long id) {
-        idNullCheck(id);
-        repository.deleteById(id);
+        repository.delete(findPayment(id));
     }
 
 
-    private PaymentDto saveProcess(PaymentRequest request){
+    private PaymentDto saveProcess(PaymentRequest request) {
         Payment payment = mapper.requestToEntity(request);
         payment.setCustomer(customerService.findCustomer(request.customerId()));
         return mapper.entityToDto(payment);
     }
 
-    private Payment findPayment(Long id){
+    private Payment findPayment(Long id) {
         return repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Payment","id",id));
+                .orElseThrow(() -> new ApplicationException(Exceptions.PAYMENT_NOT_FOUND));
     }
 
 }

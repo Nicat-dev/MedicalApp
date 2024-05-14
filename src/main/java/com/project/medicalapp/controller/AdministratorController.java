@@ -34,7 +34,7 @@ public class AdministratorController {
         return ResponseEntity.created(location).body(dto);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AdminstrationDto> get(@Valid @PathVariable Long id){
         final var dto = service.getById(id);
         return ResponseEntity.ok().body(dto);

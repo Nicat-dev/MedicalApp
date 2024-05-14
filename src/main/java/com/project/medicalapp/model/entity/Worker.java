@@ -1,5 +1,6 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
+import com.project.medicalapp.model.common.CommonEmployeInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +17,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "sale")
-public class Sale {
+@Table(name = "worker")
+public class Worker extends CommonEmployeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "percentage",nullable = false)
-    private Integer percentage;
+
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "salary_id")
+    private Salary salary;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
@@ -33,5 +41,6 @@ public class Sale {
     @Column(name = "updated_at", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
+
 
 }

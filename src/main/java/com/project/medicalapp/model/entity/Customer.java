@@ -1,5 +1,6 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
+import com.project.medicalapp.model.common.CommonUserInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "customer")
-public class Customer extends CommonUserInfo{
+public class Customer extends CommonUserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

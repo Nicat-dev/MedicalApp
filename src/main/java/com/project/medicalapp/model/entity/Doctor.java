@@ -1,5 +1,6 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
+import com.project.medicalapp.model.common.CommonEmployeInfo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "doctor")
-public class Doctor extends CommonEmployeInfo{
+public class Doctor extends CommonEmployeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "profession",nullable = false)
-    private String profession;
 
     @Column(name = "address",nullable = false)
     private String address;

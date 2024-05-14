@@ -1,6 +1,6 @@
 package com.project.medicalapp.repository;
 
-import com.project.medicalapp.model.Role;
+import com.project.medicalapp.model.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

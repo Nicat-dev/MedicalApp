@@ -1,4 +1,4 @@
-package com.project.medicalapp.model;
+package com.project.medicalapp.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,23 +11,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "prescription")
-public class Prescription {
+@Table(name = "procedure")
+public class Procedure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "head",nullable = false)
-    private String head;
-    @Column(name = "illness",nullable = false)
-    private String illness;
-    @Column(name = "description")
-    private String description;
+    @Column(name = "pracedure_name")
+    private String procedureName;
+
+    @Column(name = "price")
+    private Float price;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false,updatable = false)
@@ -39,12 +37,16 @@ public class Prescription {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "sale_id")
+    private Sale sale;
 
 }

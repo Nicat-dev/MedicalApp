@@ -1,6 +1,8 @@
 package com.project.medicalapp.controller;
 
+import com.project.medicalapp.dto.SalaryDto;
 import com.project.medicalapp.dto.SaleDto;
+import com.project.medicalapp.dto.request.SalaryRequest;
 import com.project.medicalapp.dto.request.SaleRequest;
 import com.project.medicalapp.service.SaleService;
 import jakarta.validation.Valid;

@@ -2,7 +2,7 @@ package com.project.medicalapp.mapper;
 
 import com.project.medicalapp.dto.ProcedureDto;
 import com.project.medicalapp.dto.request.ProcedureRequest;
-import com.project.medicalapp.model.Procedure;
+import com.project.medicalapp.model.entity.Procedure;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -2,7 +2,7 @@ package com.project.medicalapp.service;
 
 import com.project.medicalapp.dto.RoleDto;
 import com.project.medicalapp.dto.request.RoleRequest;
-import com.project.medicalapp.model.Role;
+import com.project.medicalapp.model.entity.Role;
 
 import java.util.List;
 

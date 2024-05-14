@@ -1,6 +1,7 @@
 package com.project.medicalapp.util;
 
-import com.project.medicalapp.exception.ResourceIdCanNotBeNull;
+import com.project.medicalapp.exception.*;
+import com.project.medicalapp.model.enums.Exceptions;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Objects;
@@ -10,7 +11,7 @@ public class ServiceValidator {
 
     public static void idNullCheck(Long id){
         if (Objects.isNull(id)){
-            throw new ResourceIdCanNotBeNull("id","id",id);
+            throw new ApplicationException(Exceptions.RESOURCE_ID_CAN_NOT_BE_NULL);
         }
     }
 
